@@ -24,6 +24,8 @@ class CharInfo extends Component {
         }
     }
 
+    
+
     updateChar =()=> {
         const {charId} = this.props;
         if(!charId) {
@@ -36,6 +38,8 @@ class CharInfo extends Component {
             .getCharacter(charId)
             .then(this.onCharLoaded)
             .catch(this.onError);
+        
+        
     }
 
     onCharLoaded = (char)=> {
@@ -111,6 +115,7 @@ const View = ({char})=> {
            
            {
                 comics.map((item, i)=> {
+                    // eslint-disable-next-line
                     if(i>9) return;
                     
                     return (
