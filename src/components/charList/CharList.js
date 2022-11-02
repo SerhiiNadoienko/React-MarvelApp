@@ -1,5 +1,6 @@
 import React,  {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import useMarvelService from '../../services/MarvelService';
@@ -24,8 +25,7 @@ const CharList = (props) => {
             .then(onCharListLoaded)
     }
 
-
-    const onCharListLoaded = (newCharList) => {
+    const onCharListLoaded =  (newCharList) => {
         let ended = false;
         if (newCharList.length < 9) {
             ended = true;
@@ -38,7 +38,6 @@ const CharList = (props) => {
     }
 
 
-
     const itemRefs = useRef([]);
 
     const focusOnItem = (id) => {
@@ -47,8 +46,6 @@ const CharList = (props) => {
         itemRefs.current[id].focus();
     }
 
-    // Этот метод создан для оптимизации, 
-    // чтобы не помещать такую конструкцию в метод render
     function renderItems(arr) {
         const items =  arr.map((item, i) => {
             let imgStyle = {'objectFit' : 'cover'};
@@ -57,7 +54,8 @@ const CharList = (props) => {
             }
             
             return (
-                <li 
+                <CSSTransition  key={item.id} timeout={500} classNames="char__item">
+                    <li 
                     className="char__item"
                     tabIndex={0}
                     ref={el => itemRefs.current[i] = el}
@@ -74,13 +72,16 @@ const CharList = (props) => {
                     }}>
                         <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
                         <div className="char__name">{item.name}</div>
-                </li>
+                    </li>
+                </CSSTransition>
             )
         });
         // А эта конструкция вынесена для центровки спиннера/ошибки
         return (
             <ul className="char__grid">
-                {items}
+                <TransitionGroup component={null}>
+                    {items}
+                </TransitionGroup>
             </ul>
         )
     }
@@ -89,6 +90,7 @@ const CharList = (props) => {
 
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading && !newItemLoading? <Spinner/> : null;
+
 
     return (
         <div className="char__list">
