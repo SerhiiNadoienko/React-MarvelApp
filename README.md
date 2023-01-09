@@ -6,7 +6,7 @@ The application receives data from the official [Marvel API](https://developer.m
 
 At first, the application was written on a class approach, but later it was rewritten on a functional one.
 
-**Opportunities**
+**Functionality**
 
 - Getting a random character
 - Switching tabs of characters and comics
